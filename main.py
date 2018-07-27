@@ -3,6 +3,8 @@ from aiohttp import web
 import os
 import logging
 
+from alice import AliceQuestion
+
 
 async def handle(request):
     name = request.match_info.get('name', "Anonymous")
@@ -14,8 +16,10 @@ async def handle(request):
 
 async def alice(request):
     data = await request.json()
+    q = AliceQuestion(data)
     print(data)
-    return web.Response(text='{"type":"error"}')
+    answer_json = q.process()
+    return web.json_response(answer_json)
 
 
 async def webhook(request):
