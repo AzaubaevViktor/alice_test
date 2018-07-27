@@ -34,7 +34,7 @@ app.add_routes([web.post('/', alice),
 port = 8080
 server = "127.0.0.1"
 if 'PORT' in os.environ:
-    port = os.environ
+    port = os.environ['PORT']
     server = "0.0.0.0"
 
 web.run_app(app, host=server, port=port)
