@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 from aiohttp import web
 import os
+import logging
+
 
 async def handle(request):
     name = request.match_info.get('name', "Anonymous")
     text = "Hello, " + name
+    logging.info(request)
+    print(request.text())
     return web.Response(text=text)
+
+
+async def alice(request):
+    data = await request.json()
+    print(data)
+    return web.Response(text='{"type":"error"}')
 
 
 async def webhook(request):
@@ -15,10 +25,16 @@ async def webhook(request):
     </head>
     <body>Verification: e61e2475dcfaa0e7</body>
 </html>"""
+    return web.Response(text=text)
 
 app = web.Application()
-app.add_routes([web.get('/', handle),
+app.add_routes([web.post('/', alice),
                 web.get('/{name}', handle),
                 web.get('/yandex_e61e2475dcfaa0e7.html', webhook)])
+port = 8080
+server = "127.0.0.1"
+if 'PORT' in os.environ:
+    port = os.environ
+    server = "0.0.0.0"
 
-web.run_app(app, host="0.0.0.0", port=os.environ['PORT'] or 8080)
+web.run_app(app, host=server, port=port)
