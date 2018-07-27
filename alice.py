@@ -28,7 +28,7 @@ class AliceQuestion:
     def __init__(self, data):
         self.tz = data['meta']['timezone']
         self.command: str = data['request']['command']
-        self.payload: dict = data['request']['payload']
+        self.payload: dict = data['request'].get('payload', {})
         self.session_new = data['session']['new']
         self.session_id = data['session']["session_id"]
         self.message_id = data['session']["message_id"]
