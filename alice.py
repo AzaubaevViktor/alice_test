@@ -19,8 +19,8 @@ class AliceAnswer:
         return self.data['response']['text']
 
     @text.setter
-    def text(self, txt):
-        self.data['response']['text'] = txt.replace("+")
+    def text(self, txt: str):
+        self.data['response']['text'] = txt.replace("+", "")
         self.data['response']['tts'] = txt
 
 
